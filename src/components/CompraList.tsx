@@ -19,44 +19,52 @@ export function CompraList({ compras, onApagar, onEditar }: CompraListProps) {
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-lg shadow-xl overflow-hidden">
-      <table className="w-full text-sm text-gray-200">
-        <thead className="bg-white/5 text-left text-gray-400">
-          <tr>
-            <th className="px-4 py-2">Descrição</th>
-            <th className="px-4 py-2">Valor total</th>
-            <th className="px-4 py-2">Restante</th>
-            <th className="px-4 py-2">Data</th>
-            <th className="px-4 py-2">Cartão</th>
-            <th className="px-4 py-2">Parcela</th>
-            <th className="px-4 py-2"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {compras.map((c) => (
-            <tr key={c.id} className="border-t border-white/5">
-              <td className="px-4 py-2">{c.descricao}</td>
-              <td className="px-4 py-2 text-gray-400">{formatarMoeda(c.valor)}</td>
-              <td className="px-4 py-2 font-medium text-white">{formatarMoeda(calcularValorRestante(c))}</td>
-              <td className="px-4 py-2">
-                {new Date(c.data + 'T00:00:00').toLocaleDateString('pt-BR')}
-              </td>
-              <td className="px-4 py-2">{c.cartao}</td>
-              <td className="px-4 py-2">{c.parcelaAtual}/{c.totalParcelas}</td>
-              <td className="px-4 py-2 text-right whitespace-nowrap">
-                <button onClick={() => onEditar(c)} className="text-teal-400 hover:underline text-xs mr-3">
-                  Editar
-                </button>
-                <button onClick={() => onApagar(c.id)} className="text-red-400 hover:underline text-xs">
-                  Apagar
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="max-w-2xl mx-auto mt-6 flex flex-col gap-3">
+      {compras.map((c) => (
+        <div
+          key={c.id}
+          className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-lg shadow-xl p-4"
+        >
+          <div className="flex justify-between items-start gap-2">
+            <div>
+              <p className="text-white font-medium">{c.descricao}</p>
+              <p className="text-xs text-gray-400 mt-0.5">
+                {new Date(c.data + 'T00:00:00').toLocaleDateString('pt-BR')} · {c.cartao}
+              </p>
+            </div>
+            <span className="text-xs bg-white/10 text-gray-300 rounded-full px-2 py-1 whitespace-nowrap">
+              {c.parcelaAtual}/{c.totalParcelas}
+            </span>
+          </div>
 
-      <div className="px-4 py-3 bg-white/5 border-t border-white/10 flex justify-between font-semibold text-white">
+          <div className="flex justify-between items-end mt-3">
+            <div>
+              <p className="text-xs text-gray-500">Valor total: {formatarMoeda(c.valor)}</p>
+              <p className="text-lg font-semibold text-white">
+                {formatarMoeda(calcularValorRestante(c))}
+                <span className="text-xs text-gray-500 font-normal"> restante</span>
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => onEditar(c)}
+                className="text-teal-400 hover:underline text-xs"
+              >
+                Editar
+              </button>
+              <button
+                onClick={() => onApagar(c.id)}
+                className="text-red-400 hover:underline text-xs"
+              >
+                Apagar
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-lg shadow-xl px-4 py-3 flex justify-between font-semibold text-white">
         <span>Total restante a pagar</span>
         <span>{formatarMoeda(totalRestante)}</span>
       </div>
