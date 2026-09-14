@@ -1,9 +1,7 @@
 import type { Compra } from './types';
 
-export function calcularValorRestante(c: Compra): number {
-  const valorPorParcela = c.valor / c.totalParcelas;
-  const parcelasRestantes = c.totalParcelas - c.parcelaAtual + 1;
-  return valorPorParcela * parcelasRestantes;
+export function calcularValorParcela(c: Compra): number {
+  return c.valor / c.totalParcelas;
 }
 
 export function formatarMoeda(valor: number): string {

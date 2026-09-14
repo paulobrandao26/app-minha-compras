@@ -1,5 +1,5 @@
 import type { Compra } from '../types';
-import { calcularValorRestante, formatarMoeda } from '../utils';
+import { calcularValorParcela, formatarMoeda } from '../utils';
 
 interface CompraListProps {
   compras: Compra[];
@@ -8,7 +8,7 @@ interface CompraListProps {
 }
 
 export function CompraList({ compras, onApagar, onEditar }: CompraListProps) {
-  const totalRestante = compras.reduce((soma, c) => soma + calcularValorRestante(c), 0);
+  const totalParcelasAtuais = compras.reduce((soma, c) => soma + calcularValorParcela(c), 0);
 
   if (compras.length === 0) {
     return (
@@ -41,8 +41,8 @@ export function CompraList({ compras, onApagar, onEditar }: CompraListProps) {
             <div>
               <p className="text-xs text-gray-500">Valor total: {formatarMoeda(c.valor)}</p>
               <p className="text-lg font-semibold text-white">
-                {formatarMoeda(calcularValorRestante(c))}
-                <span className="text-xs text-gray-500 font-normal"> restante</span>
+                {formatarMoeda(calcularValorParcela(c))}
+                <span className="text-xs text-gray-500 font-normal"> nesta parcela</span>
               </p>
             </div>
 
@@ -65,8 +65,8 @@ export function CompraList({ compras, onApagar, onEditar }: CompraListProps) {
       ))}
 
       <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-lg shadow-xl px-4 py-3 flex justify-between font-semibold text-white">
-        <span>Total restante a pagar</span>
-        <span>{formatarMoeda(totalRestante)}</span>
+        <span>Total das parcelas em aberto</span>
+        <span>{formatarMoeda(totalParcelasAtuais)}</span>
       </div>
     </div>
   );
